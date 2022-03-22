@@ -3,9 +3,13 @@ package com.bank.sure.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bank.sure.controller.dto.MessageDTO;
 import com.bank.sure.controller.response.Response;
 import com.bank.sure.domain.Message;
 import com.bank.sure.service.MessageService;
@@ -31,9 +36,25 @@ public class MessageController {
 	@Autowired
 	private MessageService messageService;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	private static Logger logger = LoggerFactory.getLogger(MessageController.class);
+	
+	private Message convertTo(MessageDTO messageDTO) {
+		Message message = modelMapper.map(messageDTO, Message.class);
+		return message;
+	}
+	
+	private MessageDTO converttoDTO (Message message) {
+		MessageDTO messageDTO = modelMapper.map(message , MessageDTO.class);
+		return messageDTO;
+	}
 	
 	@PostMapping
-	public ResponseEntity <Response> createMessage(@Valid @RequestBody Message message){
+	public ResponseEntity <Response> createMessage(@Valid @RequestBody MessageDTO messageDTO){
+		
+		Message message = convertTo(messageDTO);
 		messageService.createMessage(message);
 		
 		Response response = new Response();
@@ -48,29 +69,37 @@ public class MessageController {
 	}
 	
       @GetMapping
-      public ResponseEntity <List<Message>> getAll(){
+      public ResponseEntity <List<MessageDTO>> getAll(){
 	  
     	 List <Message> allMessage=messageService.getAll();
     	 
-    	  return new ResponseEntity<>(allMessage,HttpStatus.OK);
+    	 List <MessageDTO> messageList = allMessage.stream().map(this::converttoDTO).collect(Collectors.toList());
+    	 
+    	 
+    	  return new ResponseEntity<>(messageList,HttpStatus.OK);
 }   
       
       //localhost/8080/message/id
 	@GetMapping("/{id}")
-	public ResponseEntity <Message> getMessage(@PathVariable Long id){
+	public ResponseEntity <MessageDTO> getMessage(@PathVariable Long id){
 		Message msg = messageService.getMessage(id);
-		return ResponseEntity.ok(msg);
+		MessageDTO messageDTO = converttoDTO(msg);
+		
+		return ResponseEntity.ok(messageDTO);
 	}
 	
 	@GetMapping("/request")
-	public ResponseEntity <Message> getMessagebyRequest(@RequestParam Long id){
+	public ResponseEntity <MessageDTO> getMessagebyRequest(@RequestParam Long id){
 		Message msg = messageService.getMessage(id);
-		return ResponseEntity.ok(msg);
+		MessageDTO messageDTO = converttoDTO(msg);
+		return ResponseEntity.ok(messageDTO);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity <Response> deleteMessage(@PathVariable Long id){
 		
+		
+		logger.info("Client want to delete message id: {}",id);
 		messageService.deleteMessage(id);
 		
 		Response response = new Response ();
@@ -80,7 +109,10 @@ public class MessageController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> updateMessage (@PathVariable Long id, @Valid @RequestBody Message message){
+	public ResponseEntity<Response> updateMessage (@PathVariable Long id, @Valid @RequestBody MessageDTO messageDTO){
+		
+		Message message = convertTo(messageDTO);
+		
 		messageService.updateMessage(id,message);
 		
 		Response response = new Response();
