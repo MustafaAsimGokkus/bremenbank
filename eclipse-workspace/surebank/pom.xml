@@ -7,6 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.4</version>
+		
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bank</groupId>
@@ -17,6 +18,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,6 +46,29 @@
 			<groupId> org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+        
+        <dependency>
+             <groupId> org.springframework.boot</groupId>
+		     <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId> org.springframework.security</groupId>
+		    <artifactId>spring-security-test</artifactId>
+        </dependency>
+           
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+             <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version> 
+        </dependency>
+        
+        <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 
       <dependency>
       <groupId>org.modelmapper </groupId>
@@ -51,11 +76,7 @@
       <version>${modelmapper.version}</version>
         </dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

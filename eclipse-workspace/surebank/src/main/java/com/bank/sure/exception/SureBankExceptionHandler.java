@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.bank.sure.exception.message.ErrorMessage;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class SureBankExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
