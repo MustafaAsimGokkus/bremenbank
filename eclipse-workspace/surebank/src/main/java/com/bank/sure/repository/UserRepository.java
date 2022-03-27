@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	Optional<User> findByUserNameAndEnabledTrue(String username) throws ResourceNotFoundException;
 	
-	
+	//after the keywords existsBy spring will drive a method for you
 	Boolean existsByUserName(String userName);
 
 	Boolean existsByEmail(String email);

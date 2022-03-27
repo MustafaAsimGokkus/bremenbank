@@ -44,7 +44,7 @@ import lombok.Setter;
  private String ssn;
  
  @Column(length=20,nullable =false, unique=true)
- private String userName;
+ private String username;
  
  @Column(length=100,nullable=false,unique=true)
  private String email;
@@ -73,5 +73,22 @@ import lombok.Setter;
  @OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
  @JsonIgnore
  private List<Recipient> recipients;
+ 
+ public User (String firstName,String lastName,String ssn,String username,
+		 String email, String password, String phoneNumber, String address,
+		 String dateOfBirth, Set<Role> roles) {
+	 this.firstName=firstName;
+	 this.lastName=lastName;
+	 this.ssn=ssn;
+	 this.username=username;
+	 this.email=email;
+	 this.password=password;
+	 this.phoneNumber=phoneNumber;
+	 this.address=address;
+	 this.dateOfBirth=dateOfBirth;
+	 this.roles=roles;
+	  
+ }
+ 
  
 }
