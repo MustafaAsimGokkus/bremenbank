@@ -1,23 +1,21 @@
 package com.bank.sure.controller.request;
 
 import java.util.Set;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
 @Data
-public class RegisterRequest {
-	
-	
-    @NotBlank(message="Please provide not blank first name")
+@AllArgsConstructor
+public class UserUpdateRequest {
+  
+	@NotBlank(message="Please provide not blank first name")
     @NotNull(message="Please provide your first name")
     @Size(min=1, max=15, message="Your first name '${validatedValue}' must be between {min} and {max} chars long")
 	private String firstName;
@@ -33,10 +31,10 @@ public class RegisterRequest {
 	private String ssn;
 
 
-    @NotBlank(message="Please provide not blank username")
-    @NotNull(message="Please provide your username")
-    @Size(min=5, max=20, message="Your username'${validatedValue}' must be between {min} and {max} chars long")
-	private String userName;
+//    @NotBlank(message="Please provide not blank username")
+//    @NotNull(message="Please provide your username")
+//    @Size(min=5, max=20, message="Your username'${validatedValue}' must be between {min} and {max} chars long")
+//	private String userName;
 	
 
     @Email(message="Please provide a valid email")
@@ -44,10 +42,10 @@ public class RegisterRequest {
 	private String email;
 	
 
-    @NotBlank(message="Please provide not blank password")
-    @NotNull(message="Please provide your password")
-    @Size(min=5, max=20, message="Your password'${validatedValue}' must be between {min} and {max} chars long")
-	private String password;
+//    @NotBlank(message="Please provide not blank password")
+//    @NotNull(message="Please provide your password")
+//    @Size(min=5, max=20, message="Your password'${validatedValue}' must be between {min} and {max} chars long")
+//	private String password;
 	
 
     @Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
@@ -65,4 +63,5 @@ public class RegisterRequest {
 	
 	private Set<String> roles;
 	
+	private Boolean enabled;
 }

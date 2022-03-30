@@ -21,21 +21,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
+
 @Table(name="tbl_role")
 @Entity
 public class Role {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  
-  @Enumerated(EnumType.STRING)
-  @Column(length=30,nullable=false)
-  private UserRole name;
 
-@Override
-public String toString() {
-	return "Role [name=" + name + "]";
-}
-  
-  
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length=30,nullable=false)
+	private UserRole name;
+
+	@Override
+	public String toString() {
+		return "Role [name=" + name + "]";
+	}
+	
+	
 }

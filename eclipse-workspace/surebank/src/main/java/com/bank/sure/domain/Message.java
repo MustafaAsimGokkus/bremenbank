@@ -74,7 +74,7 @@ public class Message implements Serializable {
 	//555.555.5555
 	@Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
      message = "Please provide valid phone number")
-	@Column(name="phoneNumber",length=14,nullable = false)
+	@Column(length=14,nullable = false)
 	private String phoneNumber;
 	
 	

@@ -10,42 +10,38 @@ import com.bank.sure.exception.ResourceNotFoundException;
 import com.bank.sure.exception.message.ExceptionMessage;
 import com.bank.sure.repository.MessageRepository;
 
-
-
 @Service
-public class MessageService  {
-
+public class MessageService {
+	
 	@Autowired
 	private MessageRepository messageRepository;
 	
-	public void createMessage (Message message) {
+	public void createMessage(Message message) {
 		messageRepository.save(message);
 	}
 	
-	
-	
 	public List<Message> getAll(){
 		return messageRepository.findAll();
+		
 	}
-	
 	
 	public Message getMessage(Long id) {
-		Message message = messageRepository.findById(id).
-		orElseThrow(()->new ResourceNotFoundException(String.format(ExceptionMessage.MESSAGE_NOT_FOUND_MESSAGE, id)));
+		Message message = messageRepository.findById(id).orElseThrow(()->
+						new ResourceNotFoundException(String.format(ExceptionMessage.MESSAGE_NOT_FOUND_MESSAGE, id)));
+		
 		return message;
-		
 	}
 	
-	public void deleteMessage (Long id) {
-		Message message = messageRepository.findById(id).
-		orElseThrow(()->new ResourceNotFoundException(String.format(ExceptionMessage.MESSAGE_NOT_FOUND_MESSAGE, id)));
-		
+	
+	public void deleteMessage(Long id) {
+		Message message = messageRepository.findById(id).orElseThrow(()->
+		new ResourceNotFoundException(String.format(ExceptionMessage.MESSAGE_NOT_FOUND_MESSAGE, id)));
 		messageRepository.deleteById(message.getId());
-		
 	}
 	
-	public void updateMessage(Long id, Message message) {
-		//messageRepository.findById(message.getId());//1st find the message
+	
+	
+	public void updateMessage(Long id,Message message) {
 		Message foundMessage = getMessage(id);
 		
 		foundMessage.setName(message.getName());
@@ -53,9 +49,11 @@ public class MessageService  {
 		foundMessage.setBody(message.getBody());
 		foundMessage.setEmail(message.getEmail());
 		foundMessage.setPhoneNumber(message.getPhoneNumber());
-		
+
 		messageRepository.save(foundMessage);
-		
 	}
 	
+	
+	
+
 }

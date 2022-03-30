@@ -13,20 +13,20 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 
-//When the users wanna access a resource that they do not have permission 
-//AuthenticationEntryPoint includes the code that determines what to do
+//When the users want to access a resource that they do not have access permission
+// AuthenticationEntryPoint includes the code that determine what to do
+
+
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+	
+	private static final Logger logger=LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthTokenFilter.class);
-	
-	
-	
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		LOGGER.error("Unauthorised error {}", authException.getMessage());
-		response.sendError(HttpServletResponse.SC_BAD_GATEWAY,"Error : Unauthorised");
+		logger.error("Unauthorized error {}",authException.getMessage());
+		response.sendError(HttpServletResponse.SC_BAD_GATEWAY,"Error:Unauthorized");
 	}
 
 }

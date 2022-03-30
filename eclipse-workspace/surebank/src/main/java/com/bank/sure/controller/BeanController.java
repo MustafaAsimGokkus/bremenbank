@@ -1,4 +1,4 @@
-package com.bank.sure;
+package com.bank.sure.controller;
 
 import java.util.HashMap;
 import java.util.Map;
