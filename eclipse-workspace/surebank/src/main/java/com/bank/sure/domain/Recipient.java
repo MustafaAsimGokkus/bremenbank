@@ -1,4 +1,4 @@
-package com.bank.sure.domain;
+ package com.bank.sure.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,9 +36,8 @@ public class Recipient {
 	
 	
 	@OneToOne
-	@JoinColumn(name="account_id",unique = true)
+	@JoinColumn(name="account_id")
 	private Account account;
 	
 	
-
 }

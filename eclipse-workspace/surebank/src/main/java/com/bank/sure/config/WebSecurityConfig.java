@@ -2,6 +2,7 @@ package com.bank.sure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.bank.sure.security.AuthEntryPointJwt;
 import com.bank.sure.security.AuthTokenFilter;
@@ -71,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/*").permitAll().and()
 		.authorizeRequests().antMatchers("/register","/login")
 		.permitAll()
 		.anyRequest().authenticated();
@@ -88,12 +92,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	
+	}
 	
 	
 	
 	
 	
 
-}
+
 
 

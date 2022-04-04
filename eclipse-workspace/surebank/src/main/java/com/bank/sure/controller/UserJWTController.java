@@ -45,16 +45,7 @@ public class UserJWTController {
 		
 	}
 	
-	
-//	@PostMapping("/login")
-//	public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDTO){
-//		Authentication authentication = authenticationManager.authenticate
-//				(new UsernamePasswordAuthenticationToken(loginDTO.getUserName(),loginDTO.getPassword()));
-//		SecurityContextHolder.getContext().setAuthentication(authentication);
-//		String token = jwtUtils.generateToken(authentication);
-//		LoginResponse response=new LoginResponse(token);
-//		return ResponseEntity.ok(response);
-//	}
+
 	
 	@PostMapping("/login")
 	public ResponseEntity <LoginResponse> login(@Valid @RequestBody LoginDTO loginDTO){

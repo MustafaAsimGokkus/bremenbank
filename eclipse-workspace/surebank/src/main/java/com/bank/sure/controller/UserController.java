@@ -4,6 +4,9 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,6 +69,15 @@ public class UserController {
 		
 	}
   
+  @GetMapping("/all")
+  @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable){
+	Page <UserDTO> usersPage =   userService.getUsers(pageable);
+	return new ResponseEntity<>(usersPage,HttpStatus.OK);
+  }
+  
+  
+  
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Response> updateUser(@PathVariable Long id,@Valid @RequestBody UserUpdateRequest updateRequest){
@@ -76,4 +88,6 @@ public class UserController {
 	  response.setSuccess(true);
 	  return ResponseEntity.ok(response);  
   }
+  
+ 
 }
