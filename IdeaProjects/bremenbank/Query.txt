@@ -1,0 +1,2 @@
+insert into public.tbl_role (name) values ('ROLE_ADMIN');
+insert into public.tbl_role (name) values ('ROLE_CUSTOMER');
