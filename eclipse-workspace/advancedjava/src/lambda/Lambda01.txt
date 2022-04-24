@@ -1,0 +1,4 @@
+lambda expressions were added in Java 8
+A lambda expression is a short block of code which takes in parameters and returns a value
+lambda expressions are similar to methods, but they dont need a name and they can be implemented right in the body
+learn_And_Practice_Functional_Programming
