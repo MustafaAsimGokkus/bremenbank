@@ -1,5 +1,6 @@
 package com.bank.bremen.controller.request;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,26 +11,19 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 public class UserUpdateRequest {
+
     @NotBlank(message="Please provide not blank first name")
     @NotNull(message="Please provide your first name")
     @Size(min=1,  max=50,message="Your first name '${validatedValue}' must be between {min} and {max} chars long")
     private String firstName;
-
 
     @NotBlank(message="Please provide not blank last name")
     @NotNull(message="Please provide your last name")
     @Size(min=1,  max=50,message="Your last name '${validatedValue}' must be between {min} and {max} chars long")
     private String lastName;
 
-
     @Pattern(regexp = "^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}$")
     private String ssn;
-
-
-    @NotBlank(message="Please provide not blank username")
-    @NotNull(message="Please provide your username")
-    @Size(min=5, max=20, message="Your username'${validatedValue}' must be between {min} and {max} chars long")
-    private String userName;
 
     @Email(message="Please provide a valid email")
     @Size(min=5, max=100, message="Your email'${validatedValue}' must be between {min} and {max} chars long")
@@ -46,7 +40,6 @@ public class UserUpdateRequest {
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="MM/dd/yyyy")
     private String dateOfBirth;
-
 
     private Set<String> roles;
 

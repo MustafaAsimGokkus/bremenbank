@@ -8,6 +8,9 @@ import com.bank.bremen.domain.User;
 import com.bank.bremen.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,23 +44,43 @@ public class UserController {
 
     @GetMapping("/{id}")
    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
-        User user = userService.findById(id);
-        UserDTO userDTO = convertToDTO(user);
-        return ResponseEntity.ok(userDTO);
+
+        public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
+
+        try{
+            User user = userService.findById(id);
+            UserDTO userDTO = convertToDTO(user);
+            return ResponseEntity.ok(userDTO);
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return ResponseEntity.ok(new UserDTO());
     }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+
+    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable){
+      Page <UserDTO> userPage = userService.getUsers(pageable);
+      return new ResponseEntity<>(userPage, HttpStatus.OK);
+
+    }
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-   public ResponseEntity <Response> updateUser(@PathVariable Long id,
-                                               @Valid @RequestBody UserUpdateRequest updateRequest){
+    public ResponseEntity<Response> updateUser(@PathVariable Long id,
+    @Valid @RequestBody UserUpdateRequest updateRequest){
+      User user = userService.findById(id);
+      userService.updateUser(id,updateRequest);
+      Response response = new Response();
+      response.setMessage("User updated successfully");
+      response.setIsSuccess(true);
+      return ResponseEntity.ok(response);
 
-       User user = userService.findById(id);
-       userService.updateUser(user.getId(),updateRequest);
-
-       Response response = new Response();
-       response.setMessage("User updated successfully");
-       response.setIsSuccess(true);
-       return ResponseEntity.ok(response);
     }
+
+
+
+
 }

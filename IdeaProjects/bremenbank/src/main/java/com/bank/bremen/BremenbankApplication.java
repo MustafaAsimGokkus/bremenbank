@@ -23,7 +23,6 @@ public class BremenbankApplication {
 			.setFieldAccessLevel(AccessLevel.PRIVATE)
 			.setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
 			return modelMapper;
-
    }
 
 }
