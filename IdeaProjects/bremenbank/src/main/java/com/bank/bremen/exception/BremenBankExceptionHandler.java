@@ -1,5 +1,6 @@
 package com.bank.bremen.exception;
 
+import com.bank.bremen.exception.message.BalanceNotAvailableException;
 import com.bank.bremen.exception.message.ErrorMessage;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -104,4 +105,18 @@ public class BremenBankExceptionHandler extends ResponseEntityExceptionHandler {
                 ,errors.get(0), request.getDescription(false));
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(BalanceNotAvailableException.class)
+    protected ResponseEntity<Object> balanceNotAvailableException(
+            ConflictException ex, WebRequest request) {
+
+
+        ErrorMessage errorMessage=new ErrorMessage(new Date()
+                ,ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+
+    }
+
+
 }

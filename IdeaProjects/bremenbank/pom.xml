@@ -19,6 +19,7 @@
 		<java.version>11</java.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<openapi.version>1.6.4</openapi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -98,6 +99,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${openapi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -29,3 +29,7 @@ bremenbank:
   app:
     jwtSecret: bremenbank@@12
     jwtExpirationMs: 86400000
+info:
+  application:
+    description: This BremenBANK application was developed by BremenBANK Dev. Team
+    version: '@project.version'
