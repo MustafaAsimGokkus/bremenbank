@@ -548,3 +548,6 @@
 2022-04-27 14:30:12,925 INFO  [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-04-27 14:30:13,148 ERROR [http-nio-8080-exec-2] com.bank.bremen.security.AuthEntryPointJwt:Unauthorized error Full authentication is required to access this resource
 2022-04-27 14:30:35,019 ERROR [http-nio-8080-exec-4] com.bank.bremen.security.AuthEntryPointJwt:Unauthorized error Full authentication is required to access this resource
+2022-04-27 15:24:52,140 INFO  [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-04-27 15:24:52,145 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown initiated...
+2022-04-27 15:24:52,154 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown completed.
