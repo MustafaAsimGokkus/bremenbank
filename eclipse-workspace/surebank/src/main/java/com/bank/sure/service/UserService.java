@@ -2,11 +2,13 @@ package com.bank.sure.service;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.springframework.data.domain.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.bank.sure.controller.dto.UserDTO;
 import com.bank.sure.controller.request.RegisterRequest;
 import com.bank.sure.controller.request.UserUpdateRequest;
@@ -87,181 +89,94 @@ public class UserService {
 			orElseThrow(()->new ResourceNotFoundException(ExceptionMessage.CURRENTUSER_NOT_FOUND_MESSAGE));
 		
 		User user=userRepository.findOneWithAuthoritiesByUserName(currentUserLogin).
-		orElseThrow(()->new ResourceNotFoundException(String.format(ExceptionMessage.USERID_NOT_FOUND_MESSAGE,currentUserLogin)));
+		orElseThrow(()->new ResourceNotFoundException(String.format(ExceptionMessage.USER_NOT_FOUND_MESSAGE,currentUserLogin)));
 		
 		return user;
 	}
 	
-	public User findById(Long id) {
-		return userRepository.findById(id).orElseThrow(
-	()->new ResourceNotFoundException(String.format(ExceptionMessage.USER_NOT_FOUND_MESSAGE, id)));
-	}
-
 	
-	public Page <UserDTO>  getUsers(Pageable pageable){
+	public User findById(Long id) {
+		return userRepository.findById(id)
+			.orElseThrow(()-> new ResourceNotFoundException(String.format(ExceptionMessage.USERID_NOT_FOUND_MESSAGE, id)));
+	}
+	
+	public Page<UserDTO> getUsers(Pageable pageable){
 		return userRepository.findUsersPage(pageable);
 	}
 	
 	
+	
 	public void updateUser(Long id, UserUpdateRequest request) {
-		boolean emailExist = userRepository.existsByEmail(request.getEmail());
-		boolean ssnExist = userRepository.existsByEmail(request.getSsn());
-		
-		User foundUser = findById(id);
+		boolean emailExist=userRepository.existsByEmail(request.getEmail());
+		User foundUser=findById(id);
 		
 		if(emailExist && !foundUser.getEmail().equals(request.getEmail())) {
 			throw new ConflictException(String.format(ExceptionMessage.EMAIL_ALREADY_EXIST_MESSAGE, request.getEmail()));
 		}
 		
-		if(ssnExist && !foundUser.getSsn().equals(request.getSsn())) {
-			throw new ConflictException(String.format(ExceptionMessage.SSN_ALREADY_EXIST_MESSAGE, request.getEmail()));
+		Boolean ssnExist = userRepository.existsBySsn(request.getSsn());
+		
+		if(ssnExist&& !foundUser.getSsn().equals(request.getSsn())) {
+			throw new ConflictException(String.format(ExceptionMessage.SSN_ALREADY_EXIST_MESSAGE, request.getSsn()));
 		}
+		
 		
 		foundUser.setFirstName(request.getFirstName());
 		foundUser.setLastName(request.getLastName());
 		foundUser.setEmail(request.getEmail());
 		foundUser.setDateOfBirth(request.getDateOfBirth());
 		foundUser.setPhoneNumber(request.getPhoneNumber());
-		foundUser.setAddress(request.getAddress());
 		foundUser.setSsn(request.getSsn());
+		foundUser.setAddress(request.getAddress());
 		foundUser.setEnabled(request.getEnabled());
 		
-		Set <Role> roles =addRoles(request.getRoles());
+		Set<Role> roles=addRoles(request.getRoles());
 		foundUser.setRoles(roles);
+		
 		userRepository.save(foundUser);
+		
 	}
-	//this method is for converting all string roles into Role type
-	 private Set<Role> addRoles (Set<String> userRoles){
-		 Set<Role> roles= new HashSet<>();
+	
+	private Set<Role> addRoles(Set<String> userRoles){
+		Set<Role> roles=new HashSet<>();
+		
 		if(userRoles==null) {
-	Role role =	roleRepository.findByName(UserRole.ROLE_CUSTOMER)
-			 .orElseThrow(()-> new ResourceNotFoundException(
-					 String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE, UserRole.ROLE_CUSTOMER.name())));
-	        roles.add(role);
-		 }else {   
-			 userRoles.forEach(role->{
+			Role role=roleRepository.findByName(UserRole.ROLE_CUSTOMER)
+						.orElseThrow(()->new ResourceNotFoundException
+								(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_CUSTOMER.name())));
+						
+			roles.add(role);			
+		}else {
+			
+			userRoles.forEach(role->{
 				switch (role) {
 				case "Admin":
-					Role adminRole=	roleRepository.findByName(UserRole.ROLE_ADMIN).orElseThrow(()-> new ResourceNotFoundException(
-							 String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE, UserRole.ROLE_ADMIN.name())));
+					Role adminRole=roleRepository.findByName(UserRole.ROLE_ADMIN)
+					.orElseThrow(()->new ResourceNotFoundException
+							(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_ADMIN.name())));
+					
+					roles.add(adminRole);
+					
 					break;
-					default:
-					case "Customer":
-						Role customerRole=roleRepository.findByName(UserRole.ROLE_CUSTOMER)
-						.orElseThrow(()-> new ResourceNotFoundException(
-							String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE, UserRole.ROLE_CUSTOMER.name())
-								 ));
-						break;
+
+				default:
+					Role customerRole=roleRepository.findByName(UserRole.ROLE_CUSTOMER)
+					.orElseThrow(()->new ResourceNotFoundException
+							(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_CUSTOMER.name())));
+					
+					roles.add(customerRole);
 				}
-			 });
-		 }
-		 return roles;
-	 }
-	 
-	
-}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	public User findById(Long id) {
-//		return userRepository.findById(id)
-//			.orElseThrow(()-> new ResourceNotFoundException(String.format(ExceptionMessage.USERID_NOT_FOUND_MESSAGE, id)));
-//	}
-//	
-//	
-//	public void updateUser(Long id, UserUpdateRequest request) {
-//		boolean emailExist=userRepository.existsByEmail(request.getEmail());
-//		User foundUser=findById(id);
-//		
-//		if(emailExist && !foundUser.getEmail().equals(request.getEmail())) {
-//			throw new ConflictException(String.format(ExceptionMessage.EMAIL_ALREADY_EXIST_MESSAGE, request.getEmail()));
-//		}
-//		
-//		Boolean ssnExist = userRepository.existsBySsn(request.getSsn());
-//		
-//		if(ssnExist&& !foundUser.getSsn().equals(request.getSsn())) {
-//			throw new ConflictException(String.format(ExceptionMessage.SSN_ALREADY_EXIST_MESSAGE, request.getSsn()));
-//		}
-//		
-//		
-//		foundUser.setFirstName(request.getFirstName());
-//		foundUser.setLastName(request.getLastName());
-//		foundUser.setEmail(request.getEmail());
-//		foundUser.setDateOfBirth(request.getDateOfBirth());
-//		foundUser.setPhoneNumber(request.getPhoneNumber());
-//		foundUser.setSsn(request.getSsn());
-//		foundUser.setAddress(request.getAddress());
-//		foundUser.setEnabled(request.getEnabled());
-//		
-//		Set<Role> roles=addRoles(request.getRoles());
-//		foundUser.setRoles(roles);
-//		
-//		userRepository.save(foundUser);
-//		
-//	}
-//	
-//	private Set<Role> addRoles(Set<String> userRoles){
-//		Set<Role> roles=new HashSet<>();
-//		
-//		if(userRoles==null) {
-//			Role role=roleRepository.findByName(UserRole.ROLE_CUSTOMER)
-//						.orElseThrow(()->new ResourceNotFoundException
-//								(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_CUSTOMER.name())));
-//						
-//			roles.add(role);			
-//		}else {
-//			
-//			userRoles.forEach(role->{
-//				switch (role) {
-//				case "Admin":
-//					Role adminRole=roleRepository.findByName(UserRole.ROLE_ADMIN)
-//					.orElseThrow(()->new ResourceNotFoundException
-//							(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_ADMIN.name())));
-//					
-//					roles.add(adminRole);
-//					
-//					break;
-//
-//				default:
-//					Role customerRole=roleRepository.findByName(UserRole.ROLE_CUSTOMER)
-//					.orElseThrow(()->new ResourceNotFoundException
-//							(String.format(ExceptionMessage.ROLE_NOT_EXIST_MESSAGE,UserRole.ROLE_CUSTOMER.name())));
-//					
-//					roles.add(customerRole);
-//				}
-//				
-//			});
-//			
-//		}
-//		return roles;
-//		
-//	}
+				
+			});
+			
+		}
+		return roles;
+		
+	}
 	
 	
 	
 	
 	
 
+}

@@ -1,4 +1,4 @@
- package com.bank.sure.domain;
+package com.bank.sure.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,4 +40,5 @@ public class Recipient {
 	private Account account;
 	
 	
+
 }

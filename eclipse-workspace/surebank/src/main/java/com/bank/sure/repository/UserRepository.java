@@ -15,11 +15,10 @@ import com.bank.sure.exception.ResourceNotFoundException;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-	Optional<User> findByUserNameAndEnabledTrue(String username);
+	Optional<User> findByUserNameAndEnabledTrue(String username) throws ResourceNotFoundException;
 	
-	//@Query("SELECT new com.bank.sure.controller.dto.UserDTO(u.id,u)From User u")
 	@Query("SELECT new com.bank.sure.controller.dto.UserDTO(u.id,u) From User u")
-	Page<UserDTO> findUsersPage (Pageable pageable);
+	Page<UserDTO> findUsersPage(Pageable pageable); 
 	
 	Boolean existsByUserName(String userName);
 
@@ -29,6 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	
 	Optional<User> findOneWithAuthoritiesByUserName(String userName);
-    
 	
+	
+	
+
 }

@@ -11,7 +11,7 @@ public class RecipientRequest {
 	
     @NotBlank(message="Please provide not blank  name")
     @NotNull(message="Please provide your  name")
-    @Size(min=1, max=50, message="Your name '${validatedValue}' must be between {min} and {max} chars long")
+    @Size(min=1, max=100, message="Your name '${validatedValue}' must be between {min} and {max} chars long")
 	private String name;
     
     @NotNull

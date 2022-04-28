@@ -11,28 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/management")
+@RequestMapping("/surebankmanagement")
 public class BeanController {
- 
+	
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	
 	@GetMapping("/bean")
-	public ResponseEntity<Map<String, String>> getBeans(){
+	public ResponseEntity<Map<String,String>> getBeans(){
 		
-		String[] beanNames=applicationContext.getBeanDefinitionNames();
+		String [] beanNames=applicationContext.getBeanDefinitionNames();
 		
-		Map <String,String> map = new HashMap<>();
-		for(String beanName : beanNames) {
+		Map<String,String> map=new HashMap<>();
+		
+		for(String beanName:beanNames) {
 			map.put(beanName, applicationContext.getBean(beanName).toString());
-			
 		}
+		
 		return ResponseEntity.ok(map);
 	}
-	
+
 }
-
-
-
-

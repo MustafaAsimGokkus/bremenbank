@@ -80,13 +80,13 @@ public class User {
 	
 	
 	public User(String firstName, String lastName, String ssn,
-			String userName, String email, String password,
+			String username, String email, String password,
 			String phoneNumber, String address, String dateOfBirth,Set<Role> roles){
 		
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.ssn=ssn;
-		this.userName=userName;
+		this.userName=username;
 		this.email=email;
 		this.password=password;
 		this.phoneNumber=phoneNumber;

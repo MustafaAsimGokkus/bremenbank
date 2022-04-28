@@ -14,8 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.bank.sure.security.AuthEntryPointJwt;
 import com.bank.sure.security.AuthTokenFilter;
@@ -74,31 +72,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/*").permitAll().and()
-		.authorizeRequests().antMatchers("/register","/login")
+		.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll().and()
+		.authorizeRequests().antMatchers("/register","/login","/message/visitor","/management/**")
 		.permitAll()
 		.anyRequest().authenticated();
 		
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
-	
+	private static final String[] AUTH_LIST= {
+			"/index.html",
+			"/public/**",
+			"/v3/api-docs/**",
+			"/configuration/ui", 
+			"/swagger-resources", 
+			"/configuration/security", 
+			"/swagger-ui/**", 
+			"/webjars/**",
+			"/swagger/**"
+	};
 	
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// TODO Auto-generated method stub
-		super.configure(web);
+		 web.ignoring().antMatchers(AUTH_LIST);
 	}
 	
-	
-	}
-	
-	
-	
-	
-	
 
-
-
-
+}

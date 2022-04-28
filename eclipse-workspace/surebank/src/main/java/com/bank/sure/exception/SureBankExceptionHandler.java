@@ -18,72 +18,80 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.bank.sure.exception.message.ErrorMessage;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class SureBankExceptionHandler extends ResponseEntityExceptionHandler {
-
-	@ExceptionHandler(ResourceNotFoundException.class)
-	protected ResponseEntity <Object> handleResourseNotFoundException(ResourceNotFoundException ex, WebRequest request){
-		
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-	   return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
 	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.NOT_FOUND);
+		
 	}
+	
 	
 	@ExceptionHandler(BadRequestException.class)
-	protected ResponseEntity <Object> handleBadRequestException(BadRequestException ex, WebRequest request){
+	protected ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request){
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
 		
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-	   return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-	
 	}
 	
-	@ExceptionHandler(AccessDeniedException.class)
-	protected ResponseEntity <Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request){
-		
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-	   return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
 	
+	@ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+	protected ResponseEntity<Object> handleAccessDeniedException(org.springframework.security.access.AccessDeniedException ex, WebRequest request){
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.FORBIDDEN);
+		
 	}
+	
 	
 	@ExceptionHandler(ConflictException.class)
-	protected ResponseEntity <Object> handleConflictException(ConflictException ex, WebRequest request){
+	protected ResponseEntity<Object> handleConflictException(ConflictException ex, WebRequest request){
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.CONFLICT);
 		
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-	   return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
-	
 	}
-	  
-	@Override
+	
+	
+	@ExceptionHandler(BalanceNotAvailableException.class)
+	protected ResponseEntity<Object> handleBalanceNotAvailableException(BalanceNotAvailableException ex, WebRequest request){
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.CONFLICT);
+		
+	}
+	
+@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-		   return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+	ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+	return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
 	}
-	
-	@Override
-	protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-		   return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
-	}
-	
-	@Override
-	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage(),request.getDescription(false));
-		   return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-	}
-	
+
+@Override
+protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex,
+		HttpHeaders headers, HttpStatus status, WebRequest request) {
+	ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+	return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
+}
+
+
+@Override
+protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+		HttpStatus status, WebRequest request) {
+	ErrorMessage errorMessage=new ErrorMessage(new Date(),ex.getMessage(),request.getDescription(false));
+	return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
+}
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-		HttpHeaders headers, HttpStatus status, WebRequest request) {
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		List<String> errors  =ex.getBindingResult().getFieldErrors().stream().
-	    map(x->x.getDefaultMessage()).collect(Collectors.toList());
+		List<String> errors=ex.getBindingResult().getFieldErrors().stream().
+				map(x->x.getDefaultMessage()).collect(Collectors.toList());
 		
-		
-		
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), errors.get(0),request.getDescription(false));
-		return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+		ErrorMessage errorMessage=new ErrorMessage(new Date(),errors.get(0),request.getDescription(false));
+		return new ResponseEntity<>(errorMessage,HttpStatus.BAD_REQUEST);
 	}
+	
+		
 }

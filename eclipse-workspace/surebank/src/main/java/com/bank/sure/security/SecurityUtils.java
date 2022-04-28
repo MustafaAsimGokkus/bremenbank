@@ -11,10 +11,10 @@ public class SecurityUtils {
 	
 	public static Optional<String> getCurrentUserLogin(){
 		SecurityContext securityContext=SecurityContextHolder.getContext();
-		return Optional.ofNullable(extractPrincipa(securityContext.getAuthentication()));
+		return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
 	}
 	
-	private static String extractPrincipa(Authentication authentication) {
+	private static String extractPrincipal(Authentication authentication) {
 		if(authentication==null) {
 			return null;
 		}else if(authentication.getPrincipal() instanceof UserDetails) {

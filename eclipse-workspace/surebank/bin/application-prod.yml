@@ -1,0 +1,37 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${HOST}:5432/${DBNAME}
+    username: ${DBUSERNAME}
+    password: ${DBPASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+surebank:
+  app:
+    jwtSecret: ${SECRETKEY}
+    jwtExpirationMs: ${EXPIRATIONTIME}
+
+
+logging:
+  level:
+    '[org.springframework.web]': WARN
+    '[org.hibernate]': WARN
+    '[com.bank.sure]': INFO
+    
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ['health','info']
+
+  info:
+    env:
+      enabled: true 
+   

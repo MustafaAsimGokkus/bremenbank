@@ -2,7 +2,7 @@ package com.bank.sure.exception.message;
 
 public class ExceptionMessage {
 	
-public final static String MESSAGE_NOT_FOUND_MESSAGE="Message with id %d not found";
+	public final static String MESSAGE_NOT_FOUND_MESSAGE="Message with id %d not found";
 	
 	public final static String USER_NOT_FOUND_MESSAGE="User with username %s not found";
 	
@@ -35,7 +35,6 @@ public final static String MESSAGE_NOT_FOUND_MESSAGE="Message with id %d not fou
 	public final static String BALANCE_NOT_AVAILABLE_MESSAGE="Your balance is not sufficient";
 	
 	public final static String RECIPIENT_ACCOUNT_NOT_FOUND_MESSAGE="Recipient with account number %d not found";
-	 
-
+	
+	
 }
-

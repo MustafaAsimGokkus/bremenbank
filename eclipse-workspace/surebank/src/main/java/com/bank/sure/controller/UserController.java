@@ -21,38 +21,36 @@ import com.bank.sure.controller.request.UserUpdateRequest;
 import com.bank.sure.controller.response.Response;
 import com.bank.sure.controller.response.UserInfoResponse;
 import com.bank.sure.domain.User;
-import com.bank.sure.exception.ResourceNotFoundException;
-import com.bank.sure.exception.message.ExceptionMessage;
-import com.bank.sure.security.SecurityUtils;
 import com.bank.sure.service.UserService;
-
-import net.bytebuddy.asm.Advice.Return;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-  @Autowired
-  private UserService userService;
-  
-  @Autowired
-  private ModelMapper modelMapper;
-  
-  private UserDTO convertToDTO(User user) {
-	UserDTO userDTO = modelMapper.map(user, UserDTO.class);  
-	return userDTO;
-  }
-  @GetMapping("/userInfo")
-  @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-  public ResponseEntity<UserInfoResponse> getUserInfo(){
 	
-	 User user = userService.findOneWithAuthoritiesByUserName();
-     UserDTO userDTO = convertToDTO(user);
-    
-     UserInfoResponse response = new UserInfoResponse(userDTO);
-     response.setUser(userDTO);
-   return ResponseEntity.ok(response);
-}
-  @GetMapping("/{id}")
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	
+	private UserDTO convertToDTO(User user) {
+		UserDTO userDTO=modelMapper.map(user, UserDTO.class);
+		return userDTO;
+	}
+	
+	@GetMapping("/userInfo")
+
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
+	public ResponseEntity<UserInfoResponse> getUserInfo(){
+		User user = userService.findOneWithAuthoritiesByUserName();
+		UserDTO userDTO=convertToDTO(user);
+		UserInfoResponse response=new UserInfoResponse(userDTO);
+		return ResponseEntity.ok(response);
+	}
+	
+	
+	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
 		
@@ -68,26 +66,42 @@ public class UserController {
 		return ResponseEntity.ok(new UserDTO());
 		
 	}
-  
-  @GetMapping("/all")
-  @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable){
-	Page <UserDTO> usersPage =   userService.getUsers(pageable);
-	return new ResponseEntity<>(usersPage,HttpStatus.OK);
-  }
-  
-  
-  
-  @PutMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<Response> updateUser(@PathVariable Long id,@Valid @RequestBody UserUpdateRequest updateRequest){
-	  User user = userService.findById(id);
-	 userService.updateUser(user.getId(), updateRequest);
-	  Response response = new Response();
-	  response.setMessage("User successfully updated");
-	  response.setSuccess(true);
-	  return ResponseEntity.ok(response);  
-  }
-  
- 
+	
+	
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable){
+		Page<UserDTO> userPage = userService.getUsers(pageable);
+		return new ResponseEntity<>(userPage,HttpStatus.OK);
+	}
+	
+	
+	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest updateRequest){
+		User user=userService.findById(id);
+		userService.updateUser(user.getId(), updateRequest);	
+		
+		Response response=new Response();
+		response.setMessage("User successfully updated");
+		response.setSuccess(true);
+		return ResponseEntity.ok(response);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
